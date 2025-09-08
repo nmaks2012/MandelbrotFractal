@@ -56,7 +56,7 @@ public:
         if constexpr (N == 1) {
             PixelRegion region{0, settings.height, 0, settings.width};
             return create_region_sender(region);
-        } else if constexpr (N == 2) {
+        } else {
             PixelRegion region1{0, rows_per_task, 0, settings.width};
             PixelRegion region2{rows_per_task, settings.height, 0, settings.width};
             return stdexec::when_all(create_region_sender(region1), create_region_sender(region2)) |
@@ -87,10 +87,6 @@ public:
                                            .settings = settings,
                                            .render_time = std::chrono::milliseconds{0}};
                    });
-        } else {
-            // Для других значений N используем простой подход
-            PixelRegion region{0, settings.height, 0, settings.width};
-            return create_region_sender(region);
         }
     }
 };
